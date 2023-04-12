@@ -13,3 +13,62 @@ const apiUrls = [
 ];
 
 // You can write your code here
+// function fetchData(url) {
+//   return fetch(url).then((response) => response.json());
+// }
+
+// // Use Promise.all() to fetch data from all APIs and measure the time taken
+// const startAll = performance.now();
+// Promise.all(apiUrls.map(fetchData))
+//   .then((results) => {
+//     const endAll = performance.now();
+//     const timeTakenAll = (endAll - startAll) / 1000;
+//     document.getElementById("output-all").innerText = timeTakenAll.toFixed(3);
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+// // Use Promise.any() to fetch data from APIs and measure the time taken
+// const startAny = performance.now();
+// Promise.any(apiUrls.map(fetchData))
+//   .then((result) => {
+//     const endAny = performance.now();
+//     const timeTakenAny = (endAny - startAny) / 1000;
+//     document.getElementById("output-any").innerText = timeTakenAny.toFixed(3);
+//   })
+//   .catch((error) => {
+//     console.error(error);
+//   });
+
+
+function fetchData(url) {
+  return fetch(url)
+    .then(response => response.json())
+    .catch(error => console.log(error));
+}
+
+function fetchAllData() {
+  console.time('Promise.all');
+  Promise.all(apiUrls.map(fetchData))
+    .then(data => {
+      console.table(data);
+      console.timeEnd('Promise.all');
+      document.getElementById('output-all').textContent = `${performance.now()}ms`;
+    })
+    .catch(error => console.log(error));
+}
+
+function fetchAnyData() {
+  console.time('Promise.any');
+  Promise.any(apiUrls.map(fetchData))
+    .then(data => {
+      console.table(data);
+      console.timeEnd('Promise.any');
+      document.getElementById('output-any').textContent = `${performance.now()}ms`;
+    })
+    .catch(error => console.log(error));
+}
+
+fetchAllData();
+fetchAnyData();
